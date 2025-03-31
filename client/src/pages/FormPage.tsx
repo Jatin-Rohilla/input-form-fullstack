@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
     Box, Button, Container, FormControl, FormLabel, Input, Textarea,
-    FormErrorMessage, Heading, VStack, useToast, Select, HStack
+    FormErrorMessage, Heading, VStack, useToast, HStack
 } from '@chakra-ui/react';
 import { submitForm } from '../services/api';
 import { FormData } from '../types';

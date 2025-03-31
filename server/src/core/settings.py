@@ -22,8 +22,10 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(','
 
 # Set the CSRF_TRUSTED_ORIGINS for secure requests
 CSRF_TRUSTED_ORIGINS = [
-    'https://input-form-backend.onrender.com',
-    'https://your-frontend-app.vercel.app',
+    'https://input-form-fullstack.onrender.com',
+    'https://input-form-fullstack.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
 ]
 
 # Application definition

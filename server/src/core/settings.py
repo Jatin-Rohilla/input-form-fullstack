@@ -20,6 +20,12 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Set the CSRF_TRUSTED_ORIGINS for secure requests
+CSRF_TRUSTED_ORIGINS = [
+    'https://input-form-backend.onrender.com',
+    'https://your-frontend-app.vercel.app',
+]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -148,4 +154,7 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
-] 
+]
+
+# Add this for Render.com deployment
+PORT = int(os.environ.get('PORT', 8000)) 

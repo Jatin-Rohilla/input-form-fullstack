@@ -6,6 +6,7 @@ ENV PYTHONUNBUFFERED=1
 ENV POETRY_HOME="/opt/poetry"
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 ENV PATH="$POETRY_HOME/bin:$PATH"
+ENV PORT=8000
 
 # Set working directory
 WORKDIR /app
@@ -29,6 +30,9 @@ RUN poetry install --no-interaction --no-ansi --no-root
 
 # Copy source code
 COPY . .
+
+# Expose the port
+EXPOSE 8000
 
 # Set the entrypoint
 CMD ["poetry", "run", "python", "src/manage.py", "runserver", "0.0.0.0:8000"] 

@@ -9,23 +9,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - DATABASE_URL=postgresql://jatinrohilla:zU3fF8CflE8BMpG4WOSeRIGhVVwWEBy5@dpg-cvl7o1p5pdvs73da1lqg-a/input_form_fullstack
       - DEBUG=True
       - ALLOWED_HOSTS=localhost,127.0.0.1
       - CORS_ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
-    depends_on:
-      - db
-
-  db:
-    image: postgres:14
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
-    ports:
-      - "5432:5432"
-
-volumes:
-  postgres_data:

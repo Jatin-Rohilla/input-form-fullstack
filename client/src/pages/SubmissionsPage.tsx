@@ -83,7 +83,7 @@ const SubmissionsPage = () => {
                                 <Tr key={submission.id}>
                                     <Td>{submission.name}</Td>
                                     <Td>{submission.email}</Td>
-                                    <Td>{`${submission.countryCode} ${submission.phoneNumber}`}</Td>
+                                    <Td>{`${submission.country_code} ${submission.phone_number}`}</Td>
                                     <Td maxW="300px" isTruncated title={submission.message}>
                                         {submission.message}
                                     </Td>

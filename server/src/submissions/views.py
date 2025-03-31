@@ -3,8 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+import logging
+import json
 from .models import FormSubmission
 from .serializers import FormSubmissionSerializer
+
+logger = logging.getLogger(__name__)
 
 @method_decorator(csrf_exempt, name='dispatch')
 class FormSubmissionViewSet(viewsets.ModelViewSet):
@@ -14,8 +18,34 @@ class FormSubmissionViewSet(viewsets.ModelViewSet):
     
     def create(self, request, *args, **kwargs):
         """Create a new form submission"""
+        # Log the raw request data for debugging
+        try:
+            if isinstance(request.data, dict):
+                raw_data = request.data
+            else:
+                raw_data = json.loads(request.body.decode('utf-8')) if request.body else {}
+            logger.info(f"Request data: {raw_data}")
+        except Exception as e:
+            logger.error(f"Error parsing request data: {str(e)}")
+            
+        logger.info(f"Request headers: {request.headers}")
+            
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        
+        if not serializer.is_valid():
+            # Log and return validation errors
+            logger.error(f"Validation errors: {serializer.errors}")
+            response = Response(
+                {"detail": "Validation error", "errors": serializer.errors},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            # Add CORS headers
+            response["Access-Control-Allow-Origin"] = "https://input-form-fullstack.vercel.app"
+            response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+            response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+            response["Access-Control-Allow-Credentials"] = "true"
+            return response
+            
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         

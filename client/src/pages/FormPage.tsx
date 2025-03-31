@@ -30,20 +30,31 @@ const FormPage = () => {
     const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCodeOption>(countryCodes[0]);
     const toast = useToast();
 
+    // Define type that excludes the fields we don't need in the form
+    type FormInputs = {
+        name: string;
+        email: string;
+        phone_number: string;
+        message: string;
+    };
+
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors }
-    } = useForm<Omit<FormData, 'id' | 'createdAt' | 'countryCode'>>();
+    } = useForm<FormInputs>();
 
-    const onSubmit = async (data: Omit<FormData, 'id' | 'createdAt' | 'countryCode'>) => {
+    const onSubmit = async (data: FormInputs) => {
         try {
             setIsSubmitting(true);
             const formData: Omit<FormData, 'id' | 'createdAt'> = {
                 ...data,
-                countryCode: selectedCountryCode.value
+                country_code: selectedCountryCode.value
             };
+
+            // Log the data being sent to ensure field names match
+            console.log('Submitting form data:', formData);
 
             await submitForm(formData);
 
@@ -104,7 +115,7 @@ const FormPage = () => {
                             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                         </FormControl>
 
-                        <FormControl isInvalid={!!errors.phoneNumber} isRequired>
+                        <FormControl isInvalid={!!errors.phone_number} isRequired>
                             <FormLabel>Phone Number</FormLabel>
                             <HStack>
                                 <Box width="40%">
@@ -117,7 +128,7 @@ const FormPage = () => {
                                 </Box>
                                 <Input
                                     flex={1}
-                                    {...register('phoneNumber', {
+                                    {...register('phone_number', {
                                         required: 'Phone number is required',
                                         pattern: {
                                             value: /^[0-9]{7,15}$/,
@@ -127,7 +138,7 @@ const FormPage = () => {
                                     placeholder="Phone number"
                                 />
                             </HStack>
-                            <FormErrorMessage>{errors.phoneNumber?.message}</FormErrorMessage>
+                            <FormErrorMessage>{errors.phone_number?.message}</FormErrorMessage>
                         </FormControl>
 
                         <FormControl isInvalid={!!errors.message} isRequired>

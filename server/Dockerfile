@@ -26,8 +26,9 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 # Copy project files
 COPY pyproject.toml poetry.lock* ./
 
-# Install dependencies
+# Install dependencies with explicit Python version
 RUN poetry config virtualenvs.create false && \
+    poetry env use python3.10 && \
     poetry install --no-interaction --no-ansi --no-root
 
 # Copy source code

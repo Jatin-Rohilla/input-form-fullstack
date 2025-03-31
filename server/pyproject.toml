@@ -5,7 +5,7 @@ description = "Django backend for the Input Form application"
 authors = ["Your Name <your.email@example.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = ">=3.10,<4.0"
 django = "^5.0.2"
 djangorestframework = "^3.14.0"
 django-cors-headers = "^4.3.1"

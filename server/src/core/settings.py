@@ -28,6 +28,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://ec2-16-170-204-147.eu-north-1.compute.amazonaws.com',
     'http://localhost:5173',
     'http://localhost:3000',
+    'https://input-form-fullstack.vercel.app',
 ]
 
 # Application definition
@@ -141,6 +142,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://ec2-16-170-204-147.eu-north-1.compute.amazonaws.com',
     'http://localhost:5173',
     'http://localhost:3000',
+    'https://input-form-fullstack.vercel.app',
 ]
 
 # Alternative approach - use CORS_ALLOWED_ORIGIN_REGEXES
@@ -148,6 +150,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://property-station-frontend\.onrender\.com$",
     r"^http://ec2-16-170-204-147\.eu-north-1\.compute\.amazonaws\.com$",
     r"^http://localhost:[0-9]+$",
+    r"^https://input-form-fullstack\.vercel\.app$",
 ]
 
 # Additional CORS settings

@@ -16,6 +16,25 @@ class FormSubmissionViewSet(viewsets.ModelViewSet):
     queryset = FormSubmission.objects.all()
     serializer_class = FormSubmissionSerializer
     
+    # List of allowed origins
+    ALLOWED_ORIGINS = [
+        "https://property-station-frontend.onrender.com",
+        "http://ec2-16-170-204-147.eu-north-1.compute.amazonaws.com",
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://input-form-fullstack.vercel.app",
+    ]
+    
+    def set_cors_headers(self, response, request):
+        """Helper method to set CORS headers"""
+        origin = request.headers.get('Origin', '')
+        if origin in self.ALLOWED_ORIGINS:
+            response["Access-Control-Allow-Origin"] = origin
+            response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+            response["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+            response["Access-Control-Allow-Credentials"] = "true"
+        return response
+    
     def create(self, request, *args, **kwargs):
         """Create a new form submission"""
         # Log the raw request data for debugging
@@ -40,43 +59,26 @@ class FormSubmissionViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
             # Add CORS headers
-            response["Access-Control-Allow-Origin"] = "https://input-form-fullstack.vercel.app"
-            response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-            response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-            response["Access-Control-Allow-Credentials"] = "true"
-            return response
+            return self.set_cors_headers(response, request)
             
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         
         # Add CORS headers explicitly
         response = Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        response["Access-Control-Allow-Origin"] = "https://input-form-fullstack.vercel.app"
-        response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response["Access-Control-Allow-Credentials"] = "true"
-        
-        return response
+        return self.set_cors_headers(response, request)
     
     def list(self, request, *args, **kwargs):
         """List all form submissions"""
         response = super().list(request, *args, **kwargs)
         
         # Add CORS headers explicitly
-        response["Access-Control-Allow-Origin"] = "https://input-form-fullstack.vercel.app"
-        response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response["Access-Control-Allow-Credentials"] = "true"
-        
-        return response
+        return self.set_cors_headers(response, request)
     
     def options(self, request, *args, **kwargs):
         """Handle preflight OPTIONS requests"""
         response = Response()
-        response["Access-Control-Allow-Origin"] = "https://input-form-fullstack.vercel.app"
-        response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response["Access-Control-Allow-Credentials"] = "true"
+        response = self.set_cors_headers(response, request)
         response["Access-Control-Max-Age"] = "86400"  # 24 hours
         
         return response 

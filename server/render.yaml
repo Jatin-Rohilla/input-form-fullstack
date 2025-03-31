@@ -15,7 +15,7 @@ services:
       - key: DJANGO_DEBUG
         value: false
       - key: ALLOWED_HOSTS
-        value: property-station-backend.onrender.com,property-station-frontend.onrender.com,ec2-16-170-204-147.eu-north-1.compute.amazonaws.com
+        value: property-station-backend.onrender.com,property-station-frontend.onrender.com,ec2-16-170-204-147.eu-north-1.compute.amazonaws.com,input-form-fullstack.onrender.com
 
 databases:
   - name: property-station-db

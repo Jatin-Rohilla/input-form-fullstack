@@ -46,9 +46,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # CORS middleware needs to be at the top
+    'core.cors_middleware.CustomCorsMiddleware',  # Custom CORS middleware
+    'core.middleware.CORSDebugMiddleware',    # Custom middleware for debugging CORS
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -132,10 +134,23 @@ REST_FRAMEWORK = {
 }
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = os.environ.get(
-    'CORS_ALLOWED_ORIGINS', 
-    'http://localhost:5173,http://localhost:3000,http://localhost:5174'
-).split(',')
+CORS_ALLOWED_ORIGINS = [
+    'https://input-form-fullstack.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+]
+
+# Alternative approach - use CORS_ALLOWED_ORIGIN_REGEXES
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://input-form-fullstack\.vercel\.app$",
+    r"^http://localhost:[0-9]+$",
+]
+
+# Additional CORS settings
+CORS_ALLOW_ALL_ORIGINS = False  # Set to True if you want to allow all origins temporarily for debugging
+CORS_ALLOW_CREDENTIALS = True
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 hours
 
 CORS_ALLOW_METHODS = [
     'DELETE',
@@ -145,7 +160,6 @@ CORS_ALLOW_METHODS = [
     'POST',
     'PUT',
 ]
-
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',

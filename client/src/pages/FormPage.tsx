@@ -8,7 +8,13 @@ import { submitForm } from '../services/api';
 import { FormData } from '../types';
 import ReactSelect from 'react-select';
 
-const countryCodes = [
+// Define type for country code option
+type CountryCodeOption = {
+    value: string;
+    label: string;
+};
+
+const countryCodes: CountryCodeOption[] = [
     { value: '+1', label: 'USA/Canada (+1)' },
     { value: '+44', label: 'UK (+44)' },
     { value: '+91', label: 'India (+91)' },
@@ -21,7 +27,7 @@ const countryCodes = [
 
 const FormPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
+    const [selectedCountryCode, setSelectedCountryCode] = useState<CountryCodeOption>(countryCodes[0]);
     const toast = useToast();
 
     const {
@@ -105,7 +111,7 @@ const FormPage = () => {
                                     <ReactSelect
                                         options={countryCodes}
                                         value={selectedCountryCode}
-                                        onChange={(option) => setSelectedCountryCode(option as any)}
+                                        onChange={(option) => setSelectedCountryCode(option as CountryCodeOption)}
                                         isSearchable
                                     />
                                 </Box>

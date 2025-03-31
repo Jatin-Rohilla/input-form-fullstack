@@ -10,14 +10,32 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // Add withCredentials for CORS requests
+  withCredentials: true,
 });
 
 export const submitForm = async (data: Omit<FormData, "id" | "createdAt">) => {
-  const response = await apiClient.post("/submissions/", data);
-  return response.data;
+  try {
+    // First check if we need to perform a preflight to set CORS
+    if (typeof window !== "undefined" && window.location.origin !== API_URL) {
+      // Perform a preflight request
+      await apiClient.options("/submissions/");
+    }
+
+    const response = await apiClient.post("/submissions/", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    throw error;
+  }
 };
 
 export const getAllSubmissions = async () => {
-  const response = await apiClient.get("/submissions/");
-  return response.data;
+  try {
+    const response = await apiClient.get("/submissions/");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching submissions:", error);
+    throw error;
+  }
 };

@@ -18,7 +18,13 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-devel
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Update allowed hosts to include the actual deployed hostname
+ALLOWED_HOSTS = [
+    'localhost', 
+    '127.0.0.1', 
+    'input-form-fullstack.onrender.com',
+    '.onrender.com',  # Allow all subdomains of onrender.com
+]
 
 # Set the CSRF_TRUSTED_ORIGINS for secure requests
 CSRF_TRUSTED_ORIGINS = [

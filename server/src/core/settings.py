@@ -13,23 +13,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-development')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-default-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() == 'true'
 
 # Update allowed hosts to include the actual deployed hostname
-ALLOWED_HOSTS = [
-    'localhost', 
-    '127.0.0.1', 
-    'input-form-fullstack.onrender.com',
-    '.onrender.com',  # Allow all subdomains of onrender.com
-]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Set the CSRF_TRUSTED_ORIGINS for secure requests
 CSRF_TRUSTED_ORIGINS = [
-    'https://input-form-fullstack.onrender.com',
-    'https://input-form-fullstack.vercel.app',
+    'https://property-station-backend.onrender.com',
+    'https://property-station-frontend.onrender.com',
+    'http://ec2-16-170-204-147.eu-north-1.compute.amazonaws.com',
     'http://localhost:5173',
     'http://localhost:3000',
 ]
@@ -141,14 +137,16 @@ REST_FRAMEWORK = {
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    'https://input-form-fullstack.vercel.app',
+    'https://property-station-frontend.onrender.com',
+    'http://ec2-16-170-204-147.eu-north-1.compute.amazonaws.com',
     'http://localhost:5173',
     'http://localhost:3000',
 ]
 
 # Alternative approach - use CORS_ALLOWED_ORIGIN_REGEXES
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://input-form-fullstack\.vercel\.app$",
+    r"^https://property-station-frontend\.onrender\.com$",
+    r"^http://ec2-16-170-204-147\.eu-north-1\.compute\.amazonaws\.com$",
     r"^http://localhost:[0-9]+$",
 ]
 

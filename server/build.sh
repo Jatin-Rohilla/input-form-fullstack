@@ -3,9 +3,15 @@
 set -o errexit
 
 echo "Installing dependencies..."
-pip install poetry==1.7.1
-poetry config virtualenvs.create false
-poetry install --no-interaction --no-ansi
+pip install -U pip
+pip install "django>=5.0.2,<6.0.0" \
+    "djangorestframework>=3.14.0,<4.0.0" \
+    "django-cors-headers>=4.3.1,<5.0.0" \
+    "psycopg2-binary>=2.9.9,<3.0.0" \
+    "dj-database-url>=2.1.0,<3.0.0" \
+    "python-dotenv>=1.0.0,<2.0.0" \
+    "gunicorn>=21.2.0,<22.0.0" \
+    "gevent>=23.9.1,<24.0.0"
 
 echo "Making migrations..."
 cd src

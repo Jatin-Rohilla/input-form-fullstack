@@ -1,21 +1,22 @@
 services:
   - type: web
-    name: input-form-backend
+    name: property-station-backend
     env: python
-    buildCommand: ./build.sh
-    startCommand: cd src && gunicorn -c ../gunicorn_config.py core.wsgi:application
+    plan: free
+    buildCommand: ./render_build.sh
+    startCommand: cd src && gunicorn --worker-class=gevent --workers=4 --bind 0.0.0.0:$PORT core.wsgi:application
     envVars:
       - key: DATABASE_URL
-        value: postgresql://jatinrohilla:zU3fF8CflE8BMpG4WOSeRIGhVVwWEBy5@dpg-cvl7o1p5pdvs73da1lqg-a/input_form_fullstack
-      - key: SECRET_KEY
+        fromDatabase:
+          name: property-station-db
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
         generateValue: true
-      - key: DEBUG
-        value: False
-      - key: PYTHON_VERSION
-        value: 3.10.0
+      - key: DJANGO_DEBUG
+        value: false
       - key: ALLOWED_HOSTS
-        value: "input-form-fullstack.onrender.com,localhost,127.0.0.1,*.onrender.com"
-      - key: CORS_ALLOWED_ORIGINS
-        value: "https://input-form-fullstack.vercel.app,http://localhost:5173,http://localhost:3000"
-      - key: CORS_ALLOW_CREDENTIALS
-        value: "True"
+        value: property-station-backend.onrender.com,property-station-frontend.onrender.com,ec2-16-170-204-147.eu-north-1.compute.amazonaws.com
+
+databases:
+  - name: property-station-db
+    plan: free
